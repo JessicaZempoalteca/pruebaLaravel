@@ -29,7 +29,8 @@ class Grupo_EstudianteController extends Controller
 
     public function registroInscripcionPost(RegistroGrupoEstudianteRequest $request)
     {
-        $existeInscripcion = Grupo_Estudiante::where('grupos_id', $request->input('grupo'));
+        $existeInscripcion = Grupo_Estudiante::where('grupos_id', $request->input('grupo'))->where('estudiantes_id', $request->input('estudiante'))->exists();
+
 
         if ($existeInscripcion) {
             return redirect()->route('listarInscripciones')->with('error', 'Error. La inscripcion ya se ha creado.');
