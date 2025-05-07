@@ -7,7 +7,7 @@
     <section id="seccion">
         <div class="container mt-5">
             <h1>Editar registro de estudiante</h1>
-            <form class="formulario" action="{{ route('actualizarEstudiante', $estudiante->id) }}" method="POST">
+            <form class="formulario" action="{{ route('actualizarEstudiante', $estudiante->id) }}" method="POST" enctype="multipart/form-data" onsubmit="return validarFormulario()">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -73,10 +73,43 @@
                     @endif
                 </div>
 
+                <div class="mb-3">
+                    <label for="url_imagen">Fotografía actual del estudiante (Formato .png, máximo 2MB):</label>
+                    @if($estudiante->url_imagen)
+                        <img src="{{ asset('storage/' . $estudiante->url_imagen) }}" alt="Imagen actual" width="200">
+                    @endif
+                    <br><br>
+                    <input type="file" name="url_imagen" id="url_imagen" accept="image/png">
+                    @if ($errors->has('url_imagen'))
+                        <p class="text-danger">{{ $errors->first('url_imagen') }}</p>
+                    @endif
+                </div>
+
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>
         </div>
     </section>
     <br><br><br><br><br><br>
 
+@endsection
+
+@section('scripts')
+    <script>
+        function validarFormulario() {
+            let matricula = document.getElementById("matricula").value;
+            let nombre = document.getElementById("nombre").value;
+            let apellido_paterno = document.getElementById("apellido_paterno").value;
+            let apellido_materno = document.getElementById("apellido_materno").value;
+            let fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
+            let email = document.getElementById("email").value;
+            let telefono = document.getElementById("telefono").value;
+            let url_imagen = document.getElementById("url_imagen").files[0];
+
+            if (matricula === "" || nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
+                fecha_nacimiento === "" || email === "" || telefono === "" || !url_imagen) {
+                alert("Todos los campos son obligatorios.");
+                return false;
+            }
+        }
+    </script>
 @endsection

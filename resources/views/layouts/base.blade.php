@@ -28,10 +28,7 @@
     <!-- Contenido principal -->
     @yield('content')
 
-    <!-- Pie de página -->
-    <footer class="footer">
-        <p>&copy; 2025. Todos los derechos reservados.</p>
-    </footer>
+    @yield('scripts')
 </body>
 
 </html>

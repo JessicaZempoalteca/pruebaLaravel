@@ -23,7 +23,7 @@ class SemestreController extends Controller
     public function registroSemestrePost(RegistroSemestreRequest $request)
     {
         $semestre = new Semestre();
-        $semestre->nombre = $request->input('nombre');
+        $semestre->nombre = strtoupper($request->input('nombre'));
         $semestre->numero = $request->input('numero');
         $semestre->save();
         return redirect()->route('listarSemestres')->with('success', 'Semestre creado exitosamente.');
@@ -38,7 +38,8 @@ class SemestreController extends Controller
     public function actualizarSemestre(ActualizarSemestreRequest $request, $id)
     {
         $semestre = Semestre::findOrFail($id);
-        $semestre->nombre = $request->input('nombre');
+        $semestre->nombre = strtoupper($request->input('nombre'));
+        $semestre->numero = $request->input('numero');
         $semestre->save();
         return redirect()->route('listarSemestres')->with('success', 'Semestre actualizado exitosamente.');
     }

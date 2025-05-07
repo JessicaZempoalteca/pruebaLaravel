@@ -16,8 +16,8 @@ class ActualizarGrupoRequest extends FormRequest
     {
         return [
             'nombre'   => 'required|min:1|max:50|regex:/^[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s.-]+$/',
-            'semestre' => 'required',
-            'turno'    => 'required',
+            'semestre' => 'required|integer|exists:semestres,id',
+            'turno'    => 'required|integer|exists:turnos,id',
         ];
     }
 }

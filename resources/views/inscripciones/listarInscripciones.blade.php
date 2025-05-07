@@ -12,6 +12,7 @@
             <table class="table">
                 <tr class="table-primary">
                     <th>ID</th>
+                    <th>Fotografía</th>
                     <th>Matrícula del estudiante</th>
                     <th>Estudiante</th>
                     <th>Grupo</th>
@@ -22,6 +23,7 @@
                     @foreach ($inscripciones as $inscripcion)
                         <tr>
                             <td>{{ $inscripcion->id }}</td>
+                            <td><img src="{{ asset('storage/' . $inscripcion->estudiante->url_imagen) }}" width="100"></td>
                             <td>{{ $inscripcion->estudiante->matricula }}</td>
                             <td>{{ $inscripcion->estudiante->nombre }} {{ $inscripcion->estudiante->apellido_paterno }} {{ $inscripcion->estudiante->apellido_materno }}</td>
                             <td>{{ $inscripcion->grupo->nombre }}</td>

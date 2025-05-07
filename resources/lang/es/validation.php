@@ -43,7 +43,7 @@ return [
         'string'  => 'El :attribute debe ser mayor o igual que :value caracteres.',
         'array'   => 'El :attribute debe tener :value elementos o más.',
     ],
-    'image'                => 'El :attribute debe ser una imagen.',
+    'image'                => 'El campo :attribute debe ser una imagen.',
     'in'                   => 'El :attribute seleccionado no es válido.',
     'in_array'             => 'El campo :attribute no existe en :other.',
     'integer'              => 'El :attribute debe ser un entero.',
@@ -69,7 +69,7 @@ return [
         'string'  => 'El :attribute no puede ser mayor que :max caracteres.',
         'array'   => 'El :attribute no puede tener más de :max elementos.',
     ],
-    'mimes'                => 'El :attribute debe ser un archivo de tipo: :values.',
+    'mimes'                => 'El campo :attribute debe ser un archivo de tipo: :values.',
     'mimetypes'            => 'El :attribute debe ser un archivo de tipo: :values.',
     'min'                  => [
         'numeric' => 'El :attribute debe tener al menos :min.',
@@ -113,5 +113,6 @@ return [
         'numero'           => 'número',
         'grupos_id'         => 'grupo',
         'estudiantes_id'    => 'estudiante',
+        'url_imagen'    => 'imagen',
     ],
 ];

@@ -22,6 +22,7 @@ class RegistroEstudianteRequest extends FormRequest
             'fecha_nacimiento' => 'required|date|before:2011-01-01',
             'email' => ['required', 'email', 'max:60', Rule::unique('estudiantes')->ignore($this->student), 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'telefono' => ['required', 'min:10', 'max:10', 'regex:/^[0-9]+$/'],
+            'url_imagen' => 'required|image|mimes:png|max:2048',
         ];
     }
 }

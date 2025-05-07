@@ -13,7 +13,8 @@ class Estudiante extends Model
         'apellido_materno', 
         'fecha_nacimiento', 
         'email', 
-        'telefono'
+        'telefono',
+        'url_imagen',
     ];
 
     public function grupoEstudiantes()

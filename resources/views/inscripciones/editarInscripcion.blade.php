@@ -7,7 +7,7 @@
     <section id="seccion">
         <div class="container mt-5">
             <h1>Editar inscripción</h1>
-            <form class="formulario" action="{{ route('actualizarInscripcion', $inscripcion->id) }}" method="POST">
+            <form class="formulario" action="{{ route('actualizarInscripcion', $inscripcion->id) }}" method="POST" onsubmit="return validarFormulario()">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -45,4 +45,18 @@
         </div>
     </section>
 
+@endsection
+
+@section('scripts')
+    <script>
+        function validarFormulario() {
+            let grupo = document.getElementById("grupo").value;
+            let estudiante = document.getElementById("estudiante").value;
+
+            if (grupo === "" || estudiante === "") {
+                alert("Todos los campos son obligatorios.");
+                return false;
+            }
+        }
+    </script>
 @endsection

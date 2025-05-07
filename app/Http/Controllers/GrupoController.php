@@ -28,7 +28,7 @@ class GrupoController extends Controller
     public function registroGrupoPost(RegistroGrupoRequest $request)
     {
         $grupo = new Grupo();
-        $grupo->nombre = $request->input('nombre');
+        $grupo->nombre = strtoupper($request->input('nombre'));
         $grupo->turnos_id = $request->input('turno');
         $grupo->semestres_id = $request->input('semestre');
         $grupo->save();
@@ -46,7 +46,7 @@ class GrupoController extends Controller
     public function actualizarGrupo(ActualizarGrupoRequest $request, $grupos_id)
     {
         $grupo = Grupo::findOrFail($grupos_id);
-        $grupo->nombre = $request->input('nombre');
+        $grupo->nombre = strtoupper($request->input('nombre'));
         $grupo->turnos_id = $request->input('turno');
         $grupo->semestres_id = $request->input('semestre');
         $grupo->save();

@@ -23,7 +23,7 @@ class TurnoController extends Controller
     public function registroTurnoPost(RegistroTurnoRequest $request)
     {
         $turno = new Turno();
-        $turno->nombre = $request->input('nombre');
+        $turno->nombre = strtoupper($request->input('nombre'));
         $turno->save();
         return redirect()->route('listarTurnos')->with('success', 'Turno creado exitosamente.');
     }
@@ -37,7 +37,7 @@ class TurnoController extends Controller
     public function actualizarTurno(ActualizarTurnoRequest $request, $id)
     {
         $turno = Turno::findOrFail($id);
-        $turno->nombre = $request->input('nombre');
+        $turno->nombre = strtoupper($request->input('nombre'));
         $turno->save();
         return redirect()->route('listarTurnos')->with('success', 'Turno actualizado exitosamente.');
     }

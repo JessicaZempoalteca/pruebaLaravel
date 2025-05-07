@@ -7,13 +7,13 @@
     <section id="seccion">
         <div class="container mt-5">
             <h1>Crear grupo</h1>
-            <form class="formulario" action="{{ route('registroGrupoPost') }}" method="POST">
+            <form class="formulario" action="{{ route('registroGrupoPost') }}" method="POST" onsubmit="return validarFormulario()">
                 @csrf
 
                 <div class="mb-3">
                     <label for="nombre">Nombre del grupo:</label>
                     <input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre') }}"
-                        placeholder="Ejemplo: A">
+                        placeholder="Ejemplo: A" oninput="this.value = this.value.toUpperCase();">
                     @if ($errors->has('nombre'))
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     @endif
@@ -49,4 +49,19 @@
         </div>
     </section>
 
+@endsection
+
+@section('scripts')
+    <script>
+        function validarFormulario() {
+            let nombre = document.getElementById("nombre").value;
+            let turno = document.getElementById("turno").value;
+            let semestre = document.getElementById("semestre").value;
+
+            if (nombre === "" || turno === "" || semestre === "") {
+                alert("Todos los campos son obligatorios.");
+                return false;
+            }
+        }
+    </script>
 @endsection

@@ -15,8 +15,8 @@ class RegistroGrupoEstudianteRequest extends FormRequest
     public function rules()
     {
         return [
-            'grupo' => 'required',
-            'estudiante' => 'required',
+            'grupo' => 'required|integer|exists:grupos,id',
+            'estudiante' => 'required|integer|exists:estudiantes,id',
         ];
     }
 }

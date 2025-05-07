@@ -23,6 +23,7 @@ class CreateEstudiantesTable extends Migration
             $table->date('fecha_nacimiento')->nullable();
             $table->string('email', 60)->unique();
             $table->string('telefono', 10)->nullable();
+            $table->string('url_imagen')->nullable();
         });
     }
 
