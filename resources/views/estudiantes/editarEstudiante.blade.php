@@ -76,7 +76,7 @@
                 <div class="mb-3">
                     <label for="url_imagen">Fotografía actual del estudiante (Formato .png, máximo 2MB):</label>
                     @if($estudiante->url_imagen)
-                        <img src="{{ asset('storage/' . $estudiante->url_imagen) }}" alt="Imagen actual" width="200">
+                        <img src="{{ asset('storage/estudiantes/' . $estudiante->url_imagen) }}" alt="Imagen actual" width="200">
                     @endif
                     <br><br>
                     <input type="file" name="url_imagen" id="url_imagen" accept="image/png">
@@ -103,10 +103,9 @@
             let fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
             let email = document.getElementById("email").value;
             let telefono = document.getElementById("telefono").value;
-            let url_imagen = document.getElementById("url_imagen").files[0];
 
             if (matricula === "" || nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
-                fecha_nacimiento === "" || email === "" || telefono === "" || !url_imagen) {
+                fecha_nacimiento === "" || email === "" || telefono === "") {
                 alert("Todos los campos son obligatorios.");
                 return false;
             }

@@ -28,10 +28,10 @@ class EstudianteController extends Controller
     {
         $imagen = $request->file('url_imagen');
         $nombreImagen = Str::uuid() . '.' . $imagen->getClientOriginalExtension();
-        $imagenRedimensionada = Image::make($imagen)->resize(1200, 1200)->encode();
-        $rutaImagen = 'estudiantes/' . $nombreImagen;
+        $imagenRedimensionada = Image::make($imagen)->resize(200, 200)->encode();
+        $rutaImagen = 'estudiantes/' . strtoupper($request->input('matricula')) . '/' . $nombreImagen;
         Storage::disk('public')->put($rutaImagen, $imagenRedimensionada);
-        
+
         $estudiante = new Estudiante();
         $estudiante->matricula = strtoupper($request->input('matricula'));
         $estudiante->nombre = strtoupper($request->input('nombre'));
@@ -40,7 +40,7 @@ class EstudianteController extends Controller
         $estudiante->fecha_nacimiento = $request->input('fecha_nacimiento');
         $estudiante->email = $request->input('email');
         $estudiante->telefono = $request->input('telefono');
-        $estudiante->url_imagen = $rutaImagen;
+        $estudiante->url_imagen = strtoupper($request->input('matricula')) . '/' . $nombreImagen;
         $estudiante->save();
         
         return redirect()->route('listarEstudiantes')->with('success', 'Estudiante creado exitosamente.');
@@ -58,17 +58,18 @@ class EstudianteController extends Controller
         $estudiante = Estudiante::findOrFail($estudiantes_id);
 
         if ($request->hasFile('url_imagen')) {
-            if ($estudiante->url_imagen && Storage::disk('public')->exists($estudiante->url_imagen)) {
-                Storage::disk('public')->delete($estudiante->url_imagen);
+            if ($estudiante->url_imagen && Storage::disk('public')->exists('estudiantes/' . $estudiante->url_imagen)) {
+                Storage::disk('public')->delete('estudiantes/' . $estudiante->url_imagen);
             }
 
             $imagen = $request->file('url_imagen');
             $nombreImagen = Str::uuid() . '.' . $imagen->getClientOriginalExtension();
-            $imagenRedimensionada = Image::make($imagen)->resize(1200, 1200)->encode();
-            $rutaImagen = 'estudiantes/' . $nombreImagen;
+            $imagenRedimensionada = Image::make($imagen)->resize(200, 200)->encode();
+            $rutaImagen = 'estudiantes/' . $estudiante->matricula . '/' . $nombreImagen;
+
             Storage::disk('public')->put($rutaImagen, $imagenRedimensionada);
 
-            $estudiante->url_imagen = $rutaImagen;
+            $estudiante->url_imagen = $estudiante->matricula . '/' . $nombreImagen;
         }
 
         $estudiante->nombre = strtoupper($request->input('nombre'));
@@ -90,8 +91,8 @@ class EstudianteController extends Controller
             return redirect()->route('listarEstudiantes')->with('error', 'No se puede eliminar el registro del estudiante porque tiene inscripciones asociadas.');
         } else {
 
-            if ($estudiante->url_imagen && Storage::disk('public')->exists($estudiante->url_imagen)) {
-                    Storage::disk('public')->delete($estudiante->url_imagen);
+            if ($estudiante->url_imagen && Storage::disk('public')->exists('estudiantes/' .$estudiante->url_imagen)) {
+                    Storage::disk('public')->delete('estudiantes/' . $estudiante->url_imagen);
             }
             
             $estudiante->delete();
