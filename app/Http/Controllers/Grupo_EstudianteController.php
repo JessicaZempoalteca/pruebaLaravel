@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estudiante;
-use App\Models\Grupo;
-use App\Models\Turno;
-use App\Models\Semestre;
+use App\Http\Requests\Grupo_Estudiante\ActualizarGrupoEstudianteRequest;
+use App\Http\Requests\Grupo_Estudiante\RegistroGrupoEstudianteRequest;
 use App\Models\Grupo_Estudiante;
 use Illuminate\Http\Request;
-use App\Http\Requests\Grupo_Estudiante\RegistroGrupoEstudianteRequest;
-use App\Http\Requests\Grupo_Estudiante\ActualizarGrupoEstudianteRequest;
+use App\Models\Estudiante;
+use App\Models\Semestre;
+use App\Models\Grupo;
+use App\Models\Turno;
+
 
 class Grupo_EstudianteController extends Controller
 {
@@ -29,7 +30,9 @@ class Grupo_EstudianteController extends Controller
 
     public function registroInscripcionPost(RegistroGrupoEstudianteRequest $request)
     {
-        $existeInscripcion = Grupo_Estudiante::where('grupos_id', $request->input('grupo'))->where('estudiantes_id', $request->input('estudiante'))->exists();
+        # Verifica si no existe un registro igual al que se quiere ingresar
+        $existeInscripcion = Grupo_Estudiante::where('grupos_id', $request->input('grupo'))
+                                ->where('estudiantes_id', $request->input('estudiante'))->exists();
 
 
         if ($existeInscripcion) {

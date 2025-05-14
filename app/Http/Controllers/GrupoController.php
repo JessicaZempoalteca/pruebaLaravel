@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Grupo\ActualizarGrupoRequest;
+use App\Http\Requests\Grupo\RegistroGrupoRequest;
 use Illuminate\Http\Request;
+use App\Models\Semestre;
 use App\Models\Grupo;
 use App\Models\Turno;
-use App\Models\Semestre;
-use App\Http\Requests\Grupo\RegistroGrupoRequest;
-use App\Http\Requests\Grupo\ActualizarGrupoRequest;
 
 class GrupoController extends Controller
 {
@@ -56,6 +56,8 @@ class GrupoController extends Controller
     public function eliminarGrupo($grupos_id)
     {
         $grupo = Grupo::findOrFail($grupos_id);
+
+        # Verifica si hay un registro que dependa del que se quiere eliminar
         if ($grupo->grupoEstudiante()->exists()) {
             return redirect()->route('listarGrupos')->with('error', 'No se puede eliminar el grupo porque tiene inscripciones asociadas.');
         } else {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Semestre\ActualizarSemestreRequest;
+use App\Http\Requests\Semestre\RegistroSemestreRequest;
 use Illuminate\Http\Request;
 use App\Models\Semestre;
-use App\Http\Requests\Semestre\RegistroSemestreRequest;
-use App\Http\Requests\Semestre\ActualizarSemestreRequest;
 
 class SemestreController extends Controller
 {
@@ -47,6 +47,8 @@ class SemestreController extends Controller
     public function eliminarSemestre($semestres_id)
     {
         $semestre = Semestre::findOrFail($semestres_id);
+
+        # Verifica si hay un registro que dependa del que se quiere eliminar
         if ($semestre->semestreGrupo()->exists()) {
             return redirect()->route('listarSemestres')->with('error', 'No se puede eliminar el semestre porque tiene grupos asociados.');    
         } else {

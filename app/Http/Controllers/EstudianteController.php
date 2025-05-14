@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Estudiante;
-use App\Http\Requests\Estudiante\RegistroEstudianteRequest;
 use App\Http\Requests\Estudiante\ActualizarEstudianteRequest;
+use App\Http\Requests\Estudiante\RegistroEstudianteRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Estudiante;
 
 class EstudianteController extends Controller
 {
     public function listarEstudiantes()
     {
-        $estudiantes = Estudiante::select('id', 'url_imagen', 'matricula', 'nombre', 'apellido_paterno', 'apellido_materno', 'email')->paginate(15);
+        $estudiantes = Estudiante::select('id', 'url_imagen', 'matricula', 'nombre', 'apellido_paterno', 'apellido_materno', 'email')
+                            ->paginate(15);
 
         return view('estudiantes.listarEstudiantes', compact('estudiantes'));
     }
@@ -27,9 +28,17 @@ class EstudianteController extends Controller
     public function registroEstudiantePost(RegistroEstudianteRequest $request)
     {
         $imagen = $request->file('url_imagen');
+
+        # Establecer nombre a la imagen 
         $nombreImagen = Str::uuid() . '.' . $imagen->getClientOriginalExtension();
+
+        # Redimencionar imagen
         $imagenRedimensionada = Image::make($imagen)->resize(200, 200)->encode();
+
+        # Establecer ruta de la imagen de acuerdo a su matricula
         $rutaImagen = 'estudiantes/' . strtoupper($request->input('matricula')) . '/' . $nombreImagen;
+
+        # Guardar imagen en el disco público
         Storage::disk('public')->put($rutaImagen, $imagenRedimensionada);
 
         $estudiante = new Estudiante();
@@ -57,8 +66,13 @@ class EstudianteController extends Controller
     {
         $estudiante = Estudiante::findOrFail($estudiantes_id);
 
+        # Verifica si el usuario ingresó una imagen al input
         if ($request->hasFile('url_imagen')) {
+
+            # Busca que exista la imagen en el disco publico
             if ($estudiante->url_imagen && Storage::disk('public')->exists('estudiantes/' . $estudiante->url_imagen)) {
+
+                #Elimina la imagen anterior
                 Storage::disk('public')->delete('estudiantes/' . $estudiante->url_imagen);
             }
 
@@ -67,6 +81,7 @@ class EstudianteController extends Controller
             $imagenRedimensionada = Image::make($imagen)->resize(200, 200)->encode();
             $rutaImagen = 'estudiantes/' . $estudiante->matricula . '/' . $nombreImagen;
 
+            # Guarda en el disco publico la nueva imagen
             Storage::disk('public')->put($rutaImagen, $imagenRedimensionada);
 
             $estudiante->url_imagen = $estudiante->matricula . '/' . $nombreImagen;
@@ -87,10 +102,13 @@ class EstudianteController extends Controller
     {
         $estudiante = Estudiante::findOrFail($estudiantes_id);
 
+        # Verifica que no exista un registro que dependa del que se quiere borrar
         if ($estudiante->grupoEstudiantes()->exists()) {
-            return redirect()->route('listarEstudiantes')->with('error', 'No se puede eliminar el registro del estudiante porque tiene inscripciones asociadas.');
+            return redirect()->route('listarEstudiantes')
+                ->with('error', 'No se puede eliminar el registro del estudiante porque tiene inscripciones asociadas.');
         } else {
 
+            # En caso de que no, busca la imagen en el disco para eliminarla
             if ($estudiante->url_imagen && Storage::disk('public')->exists('estudiantes/' .$estudiante->url_imagen)) {
                     Storage::disk('public')->delete('estudiantes/' . $estudiante->url_imagen);
             }

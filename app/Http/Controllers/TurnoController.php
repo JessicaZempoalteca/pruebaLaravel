@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Turno\ActualizarTurnoRequest;
+use App\Http\Requests\Turno\RegistroTurnoRequest;
 use Illuminate\Http\Request;
 use App\Models\Turno;
-use App\Http\Requests\Turno\RegistroTurnoRequest;
-use App\Http\Requests\Turno\ActualizarTurnoRequest;
 
 class TurnoController extends Controller
 {
@@ -45,6 +45,8 @@ class TurnoController extends Controller
     public function eliminarTurno($turnos_id)
     {
         $turno = Turno::findOrFail($turnos_id);
+
+        # Verifica si existe un registro que dependa del que se quiere eliminar
         if ($turno->turnoGrupo()->exists())
         {
             return redirect()->route('listarTurnos')->with('error', 'No se puede eliminar el turno porque tiene grupos asociados.');    
